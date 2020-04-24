@@ -1,3 +1,4 @@
+https://www.youtube.com/watch?v=FxHqHahVHV0&feature=youtu.be
 I had yolo.
 I needed more image dataset.
 I had to take pictures and label them with a labeling program.
