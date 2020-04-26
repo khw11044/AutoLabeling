@@ -8,7 +8,7 @@ import importlib.util
 import time
 import shutil
 
-min_confidence = 0.1
+min_confidence = 0.3
 margin = 30
 #file_name = "drone3.jpg"
 
@@ -104,12 +104,17 @@ for image_path in images:
             x, y, w, h = boxes[i]
             label = '{:,.2%}'.format(confidences[i])
             print(i, label)
-            cv2.rectangle(img, (x, y), (x + w, y + h), color, 2)
-            print("xmin,ymin,xmax,ymax",x,y,x+w,y+h)
+            xmax=x+w
+            ymax=y+h
+            cv2.rectangle(img, (x, y), (xmax, ymax), color, 2)
+            print("xmin,ymin,xmax,ymax",x,y,xmax,ymax)
             cv2.putText(img, label, (x, y - 10), font, 1, color, 2)
             
             f = open(xmlfolder+'/'+filename2+".xml", 'w')
-            f.write("<annotation>\n\t<folder>"+IM_DIR+"</folder>\n\t<filename>"+filename+"</filename>\n\t<path>C:\Repos\droneimage\2.jpg</path>\n\t<source>\n\t\t<database>Unknown</database>\n\t</source>\n\t<size>\n\t\t<width>800</width>\n\t\t<height>600</height>\n\t\t<depth>3</depth>\n\t</size>\n\t<segmented>0</segmented>\n\t<object>\n\t\t<name>Drone</name>\n\t\t<pose>Unspecified</pose>\n\t\t<truncated>0</truncated>\n\t\t<difficult>0</difficult>\n\t\t<bndbox>\n\t\t\t<xmin>47</xmin>\n\t\t\t<ymin>64</ymin>\n\t\t\t<xmax>778</xmax>\n\t\t\t<ymax>486</ymax>\n\t\t</bndbox>\n\t</object>\n</annotation>")
+            #f.write("<annotation>"+\n\t"<folder>"+imgfolder+"</folder>"\n\t"<filename>"+'D'+date+"</filename>\n\"<path>"+imgfolder +'/' + 'D'+ date + '.jpg'+"</path>\n\t<source>\n\t\t<database>Unknown</database>\n\t</source>\n\t<size>+\n\t\t<width>800</width>\n\t\t<height>600</height>\n\t\t<depth>3</depth>\n\t</size>\n\t<segmented>0</segmented>\n\t<object>\n\t\t<name>Drone</name>\n\t\t<pose>Unspecified</pose>\n\t\t<truncated>0</truncated>\n\t\t<difficult>0</difficult>\n\t\t<bndbox>\n\t\t\t<xmin>"+lx+"</xmin>\n\t\t\t<ymin>"+ly+"</ymin>\n\t\t\t<xmax>"+lw+"</xmax>\n\t\t\t<ymax>"+lh+"</ymax>\n\t\t</bndbox>\n\t</object>\n</annotation>")
+            line = ['<annotation>\n','\t<folder>imgfolder</folder>\n','\t<filename>date</filename>\n']
+            #f.write("<annotation>\n\t<folder>imgfolder</folder>\n\t<filename>'Ddate</filename>\n\"<path>imgfolder.jpg</path>\n\t<source>\n\t\t<database>Unknown</database>\n\t</source>\n\t<size>\n\t\t<width>800</width>\n\t\t<height>600</height>\n\t\t<depth>3</depth>\n\t</size>\n\t<segmented>0</segmented>\n\t<object>\n\t\t<name>Drone</name>\n\t\t<pose>Unspecified</pose>\n\t\t<truncated>0</truncated>\n\t\t<difficult>0</difficult>\n\t\t<bndbox>\n\t\t\t<xmin>"+str(x)+"</xmin>\n\t\t\t<ymin>"+str(y)+"</ymin>\n\t\t\t<xmax>"+str(xmax)+"</xmax>\n\t\t\t<ymax>"+str(ymax)+"</ymax>\n\t\t</bndbox>")
+            f.writelines(line)
             f.close
             print("succese")
         
@@ -124,7 +129,7 @@ for image_path in images:
     resizeimg = cv2.resize(img,(800,600))
     cv2.imshow("Number of Car - "+image_path, resizeimg)    
     key = cv2.waitKey(0)
-    if key == 13:
+    if key == 13: 
         cv2.destroyAllWindows()
     
     end_time = time.time()
