@@ -1,5 +1,9 @@
+https://www.youtube.com/watch?v=hECRUHlTTqg
+
 I had yolo.
+
 I needed more image dataset.
+
 I had to take pictures and label them with a labeling program.
 It was so annoying.
 So I made an Auto Labeling code using yolo that I had.
@@ -41,4 +45,4 @@ d 키를 누르면 만들어진 xml파일이 삭제되고 그 사진은 ‘실�
 
 결국 저는 탐지 못한 드론 사진만 라벨링하면 됩니다.
 
-
+https://blog.naver.com/khw11044/221926134482
