@@ -105,24 +105,44 @@ for image_path in images:
             label = '{:,.2%}'.format(confidences[i])
             print(i, label)
             cv2.rectangle(img, (x, y), (x + w, y + h), color, 2)
-            print("xmin,ymin,xmax,ymax",x,y,x+w,y+h)
+            lx=str(x)
+            ly=str(y)
+            lw=str(x+w)
+            lh=str(y+h)
+            print("xmin,ymin,xmax,ymax",lx,ly,lw,lh)
             cv2.putText(img, label, (x, y - 10), font, 1, color, 2)
             
-            f = open(xmlfolder+'/'+filename2+".xml", 'w')
-            f.write("<annotation>\n\t<folder>"+IM_DIR+"</folder>\n\t<filename>"+filename+"</filename>\n\t<path>C:\Repos\droneimage\2.jpg</path>\n\t<source>\n\t\t<database>Unknown</database>\n\t</source>\n\t<size>\n\t\t<width>800</width>\n\t\t<height>600</height>\n\t\t<depth>3</depth>\n\t</size>\n\t<segmented>0</segmented>\n\t<object>\n\t\t<name>Drone</name>\n\t\t<pose>Unspecified</pose>\n\t\t<truncated>0</truncated>\n\t\t<difficult>0</difficult>\n\t\t<bndbox>\n\t\t\t<xmin>47</xmin>\n\t\t\t<ymin>64</ymin>\n\t\t\t<xmax>778</xmax>\n\t\t\t<ymax>486</ymax>\n\t\t</bndbox>\n\t</object>\n</annotation>")
-            f.close
-            print("succese")
         
             
     text = "Number of drone is : {} ".format(len(indexes))
     if len(indexes) == 0:
         print("fail")
         shutil.move(PATH_TO_IMAGES+'/'+filename, failimages+'/'+filename)
-        
+    
+    if len(indexes) != 0:
+        f = open(xmlfolder+'/'+filename2+".xml", 'w')
+        time.sleep(0.1)
+        f.write('<annotation>\n\t<folder>'+xmlfolder+'</folder>\n')
+        f.write('\t<filename>'+filename2+'</filename>\n<path>'+filename2+'.jpg</path>\n')
+        f.write('\t<source>\n\t/t<database>Unknown</database>\n\t</source>\n')
+        f.write('\t<size>\n\t\t<width>800</width>\n\t\t<height>600</height>\n')
+        f.write('\t\t<depth>3</depth>\n\t</size>\n\t<segmented>0</segmented>\n')
+        for i in indexes:
+            f.write('\t<object>\n\t\t<name>Drone</name>\n\t\t<pose>Unspecified</pose>\n')
+            f.write('\t/t<truncated>0</truncated>\n\t\t<difficult>0</difficult>\n')
+            f.write('\t\t<bndbox>\n\t\t\t<xmin>'+str(lx)+'</xmin>\n')
+            f.write('\t\t\t<ymin>'+str(ly)+'</ymin>\n')
+            f.write('\t\t\t<xmax>'+str(lw)+'</xmax>\n')
+            f.write('\t\t\t<ymax>'+str(lh)+'</ymax>\n')
+            f.write('\t\t</bndbox>\n\t</object>\n')
+        f.write('</annotation>')
+        time.sleep(0.1)
+        f.close
+        print("succese")
         
     cv2.putText(img, text, (margin, margin), font, 2, color, 2)
     resizeimg = cv2.resize(img,(800,600))
-    cv2.imshow("Number of Car - "+image_path, resizeimg)    
+    cv2.imshow("Number of Drone - "+image_path, resizeimg)    
     key = cv2.waitKey(0)
     if key == 13:
         cv2.destroyAllWindows()
